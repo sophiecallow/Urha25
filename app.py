@@ -279,38 +279,63 @@ def quizzes():
 
 
 
-@app.route('/quiz/<quiz_name>', methods=['GET', 'POST'])
+# @app.route('/quiz/<quiz_name>', methods=['GET', 'POST'])
+# def quiz(quiz_name):
+#     """Handle quiz navigation."""
+#     quizzes = load_data(QUIZ_FILE)
+#     questions = quizzes.get(quiz_name, [])
+#     if not questions:
+#         return "Quiz not found!", 404
+
+#     # Track user progress using session
+#     if quiz_name not in session:
+#         session[quiz_name] = 0  # Initialize progress
+
+#     progress = session[quiz_name]
+
+#     if request.method == 'POST':
+#         user_answer = request.form.get('answer')
+#         if user_answer:  # Simulate answer validation
+#             progress += 1
+#             session[quiz_name] = progress
+
+#     if progress >= len(questions):
+#         return render_template('quiz_completed.html', quiz_name=quiz_name)
+
+#     question = questions[progress]
+#     return render_template(
+#         'quiz_navigation.html',
+#         quiz_name=quiz_name,
+#         question=question,
+#         progress=progress + 1,
+#         total_questions=len(questions),
+#     )
+
+@app.route('/quiz/<quiz_name>')
 def quiz(quiz_name):
-    """Handle quiz navigation."""
+    # Load your quiz data
     quizzes = load_data(QUIZ_FILE)
     questions = quizzes.get(quiz_name, [])
     if not questions:
         return "Quiz not found!", 404
 
-    # Track user progress using session
-    if quiz_name not in session:
-        session[quiz_name] = 0  # Initialize progress
+    # Get the current question index
+    question_index = int(request.args.get('question', 0))  # Default to the first question
+    question_index = max(0, min(question_index, len(questions) - 1))  # Keep within range
 
-    progress = session[quiz_name]
+    # Calculate progress
+    total_questions = len(questions)
+    progress = ((question_index + 1) / total_questions) * 100
 
-    if request.method == 'POST':
-        user_answer = request.form.get('answer')
-        if user_answer:  # Simulate answer validation
-            progress += 1
-            session[quiz_name] = progress
-
-    if progress >= len(questions):
-        return render_template('quiz_completed.html', quiz_name=quiz_name)
-
-    question = questions[progress]
+    # Render template with variables
     return render_template(
         'quiz_navigation.html',
         quiz_name=quiz_name,
-        question=question,
-        progress=progress + 1,
-        total_questions=len(questions),
+        question=questions[question_index],
+        question_index=question_index,
+        total_questions=total_questions,
+        progress=progress
     )
-
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # Use Railway's PORT or default to 5000
     app.run(host='0.0.0.0', port=port)
