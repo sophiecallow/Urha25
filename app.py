@@ -275,7 +275,8 @@ def logout():
 def quizzes():
     """Display a list of all quizzes for users."""
     quizzes = load_data(QUIZ_FILE)
-    return jsonify(quizzes)  # Return as JSON
+    return render_template('quizzes.html', quizzes=quizzes)  # Render HTML template
+
 
 
 @app.route('/quiz/<quiz_name>', methods=['GET', 'POST'])
