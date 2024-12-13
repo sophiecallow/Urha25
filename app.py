@@ -197,7 +197,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == 'admin' and password == 'password':
+        if username == 'jermyshijo' and password == '7dc6d58aec12':
             session['username'] = username
             return redirect(url_for('admin'))
         else:
