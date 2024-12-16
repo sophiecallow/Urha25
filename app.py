@@ -230,7 +230,7 @@ def create_or_edit_quiz():
         quiz_name = request.form['quiz_name']
         questions = []
 
-        for i in range(1, 11):  # Allow up to 10 questions
+        for i in range(1, 1000000):  # Allow up to 10 questions
             question = request.form.get(f'question-{i}')
             answer = request.form.get(f'answer-{i}')
             if question and answer:  # Skip empty question-answer pairs

@@ -167,8 +167,21 @@
             <div class="progress-bar-inner"></div>
         </div>
 
-        <div class="answer-section">
+        <!-- <div class="answer-section">
             <button class="btn btn-show-answer" onclick="document.getElementById('answer').style.display = 'block';">
+                Show Answer
+            </button>
+            <div id="answer" class="answer">
+                <strong>Answer:</strong> {{ question['answer'] }}
+            </div>
+        </div> -->
+
+        <div class="answer-section">
+            <button 
+                id="toggle-answer-btn" 
+                class="btn btn-show-answer" 
+                onclick="toggleAnswer()"
+            >
                 Show Answer
             </button>
             <div id="answer" class="answer">
@@ -193,5 +206,23 @@
             Back to Quizzes
         </a>
     </div>
+
+    <script>
+        const answerElement = document.getElementById('answer');
+        const toggleButton = document.getElementById('toggle-answer-btn');
+        
+        // Initially hide the answer
+        answerElement.style.display = 'none';
+        
+        function toggleAnswer() {
+            if (answerElement.style.display === 'none') {
+                answerElement.style.display = 'block';
+                toggleButton.textContent = 'Hide Answer';
+            } else {
+                answerElement.style.display = 'none';
+                toggleButton.textContent = 'Show Answer';
+            }
+        }
+    </script>
 </body>
 </html>
